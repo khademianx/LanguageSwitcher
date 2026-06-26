@@ -1,0 +1,26 @@
+name: Build EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish EXE
+        run: dotnet publish -c Release -r win-x64 --self-contained true
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: LanguageSwitcher
+          path: bin/Release/net8.0-windows/win-x64/publish/
